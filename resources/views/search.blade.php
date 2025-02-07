@@ -37,11 +37,18 @@
                             if(response.guests.length > 0) {
                                 response.guests.forEach(guest => {
                                 guests +=
-                                    `<div class="my-5 flex flex-col justify-center items-center border border-gray-500 rounded p-5">
-                                        <img src="${guest.photo}" alt="${guest.name}" class="mb-2 rounded overflow-hidden w-80 h-80"/>
-                                        <p><strong>${guest.eng_name}, ${guest.arabic_name}</strong></p>
-                                        <p>${guest.title}</p>
-                                        <p>Seat Number: ${guest.seat_number}</p>
+                                    `<div class="my-5 border border-gray-500 rounded p-5">
+                                        <div class="flex flex-col justify-center items-center">
+                                            <img src="${guest.photo}" alt="${guest.name}" class="mb-2 rounded overflow-hidden w-80 h-80"/>
+                                            <p><strong>${guest.eng_name}, ${guest.arabic_name}</strong></p>
+                                            <p>${guest.title.name}</p>
+                                            <p>Seat Number: ${guest.seat_number}</p>
+                                        </div>
+                                        <div class="flex justify-end items-center">
+                                            <button onclick="confirm(${guest.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                Confirm!
+                                            </button>
+                                        </div>
                                     </div>`;
                                 });
                                 $('#guests').html('');
@@ -52,6 +59,10 @@
                         }
                     });
                 });
+
+                function confirm(id) {
+                    console.log(id);
+                }
         </script>
     @endpush
 </x-app-layout>

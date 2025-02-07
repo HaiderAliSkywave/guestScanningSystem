@@ -23,7 +23,7 @@ class Guest extends Controller
         } catch (\Exception $e) {
             return
             '<p style="color: red; font-weight: bold;">
-                Error: All the cells in the excel sheet should only contain values (without spaces).
+                Error: Could not import the list. Please remove all the cells that contain spaces only or create a new list without a non-empty cell.
             </p>';
         }
     }
@@ -36,7 +36,8 @@ class Guest extends Controller
         $search = $request->query('name');
 
         if ($search) {
-            $guests = GuestModel::select('eng_name', 'arabic_name', 'photo', 'seat_number')
+            $guests = GuestModel::with('title')
+            ->where('status', 'yet to arrive')
             ->where('eng_name', 'like', '%' . $search . '%')
             ->orWhere('arabic_name', 'like', '%' . $search . '%')
             ->get();
@@ -45,5 +46,22 @@ class Guest extends Controller
         }
 
         return response(['guests' => []], 200);
+    }
+
+    public function confirmGuest (GuestModel $guest) {
+        $guest->status = 'incoming';
+        $guest->save();
+    }
+
+    public function incomingGuests (Request $request) {
+        $guests = GuestModel::with('title')
+        ->where('status', 'incoming')
+        ->get();
+
+        if ($request->ajax()) {
+            return response(['guests' => $guests], 200);
+        }
+        
+        return view('incoming');
     }
 }

@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/upload', [Guest::class, 'import'])->name('upload');
     Route::get('/search', [Guest::class, 'search'])->name('search');
     Route::get('/search-guests', [Guest::class, 'searchGuests'])->name('search-guests');
+    Route::get('/confirm-guest/{guest}', [Guest::class, 'confirmGuest'])->name('confirm-guest');
+    Route::get('/incoming-guests/{view?}', [Guest::class, 'incomingGuests'])->name('incoming-guests');
 });
 
 require __DIR__.'/auth.php';
