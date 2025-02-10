@@ -29,7 +29,7 @@
                             guests +=
                                 `<div id="guest-div-${guest.id}" class="my-5 border border-gray-500 rounded p-5">
                                     <div class="flex flex-col justify-center items-center">
-                                        <img src="${guest.photo}" alt="${guest.name}" class="mb-2 rounded overflow-hidden w-80 h-80"/>
+                                        <img src="{{ asset('storage/${guest.photo}') }}" alt="${guest.name}" class="mb-2 rounded overflow-hidden w-80 h-80"/>
                                         <p><strong>${guest.eng_name}, ${guest.arabic_name}</strong></p>
                                         <p>${guest.title.name}</p>
                                         <p>Seat Number: ${guest.seat_number}</p>
@@ -52,6 +52,7 @@
 
             function onSeat(id) {
                 $('#guest-button-' + id).attr('disabled', true);
+                $('#guest-button-' + id).html('Processing...');
                 $.ajax({
                         url: `{{ route('on-seat') }}?guest=${id}`,
                         type: 'GET',
