@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('seat_number');
             $table->unsignedBigInteger('title_id');
             $table->foreign('title_id')->references('id')->on('titles');
-            $table->string('status')->default('yet to arrive');
+            $table->string('status');
             $table->timestamps();
         });
     }

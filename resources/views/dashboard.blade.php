@@ -17,6 +17,16 @@
                         </div>
                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Upload</button>
                     </form>
+                    @if (session('success'))
+                        <div class="mt-5 bg-transparent text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <span class="block sm:inline"><strong>{{ session('success') }}</strong></span>
+                        </div>                        
+                    @endif
+                    @if (session('error'))
+                        <div class="mt-5 bg-transparent text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <span class="block sm:inline"><strong>{{ session('error') }}</strong></span>
+                        </div>                        
+                    @endif
                 </div>
             </div>
         </div>

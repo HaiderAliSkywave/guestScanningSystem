@@ -16,15 +16,9 @@ class Guest extends Controller
 
             Excel::import(new GuestsImport, $excelSheet);
 
-            return 
-            '<p style="color: green; font-weight: bold;">
-                Success: Imported Successfully.
-            </p>';
+            return back()->with('success', 'List imported successfully.');
         } catch (\Exception $e) {
-            return
-            '<p style="color: red; font-weight: bold;">
-                Error: Could not import the list. Please remove all the cells that contain spaces only or create a new list without a non-empty cell.
-            </p>';
+            return back()->with('error', 'Error: Could not import the list. Please remove all the cells that contain spaces only or create a new list without a non-empty cell.');
         }
     }
 
@@ -48,14 +42,22 @@ class Guest extends Controller
         return response(['guests' => []], 200);
     }
 
-    public function confirmGuest (GuestModel $guest) {
-        $guest->status = 'incoming';
-        $guest->save();
+    public function confirmGuest () {
+        try {
+            $guest = GuestModel::find(request('guest'));
+            $guest->status = 'incoming';
+            $guest->save();
+
+            return response(['success' => 'Confirmed!'], 200);
+        } catch (\Exception $e) {
+            return response(['error' => 'Try again!']);
+        }
     }
 
     public function incomingGuests (Request $request) {
         $guests = GuestModel::with('title')
         ->where('status', 'incoming')
+        ->orderBy('updated_at', 'desc')
         ->get();
 
         if ($request->ajax()) {
@@ -63,5 +65,17 @@ class Guest extends Controller
         }
         
         return view('incoming');
+    }
+
+    public function onSeat () {
+        try {
+                $guest = GuestModel::find(request('guest'));
+                $guest->status = 'on seat';
+                $guest->save();
+
+                return response(['success' => 'Confirmed!'], 200);
+        } catch (\Exception $e) {
+            return response(['error' => 'Try again!']);
+        }
     }
 }

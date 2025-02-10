@@ -24,6 +24,7 @@ class GuestsImport implements ToModel, WithHeadingRow
             'photo' => trim($row['photo']),
             'seat_number' => trim($row['seat_number']),
             'title_id' => trim($title->id),
+            'status' => trim($row['status']),
         ]);
     }
 }

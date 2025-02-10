@@ -37,7 +37,7 @@
                             if(response.guests.length > 0) {
                                 response.guests.forEach(guest => {
                                 guests +=
-                                    `<div class="my-5 border border-gray-500 rounded p-5">
+                                    `<div id="guest-${guest.id}" class="my-5 border border-gray-500 rounded p-5">
                                         <div class="flex flex-col justify-center items-center">
                                             <img src="${guest.photo}" alt="${guest.name}" class="mb-2 rounded overflow-hidden w-80 h-80"/>
                                             <p><strong>${guest.eng_name}, ${guest.arabic_name}</strong></p>
@@ -45,7 +45,7 @@
                                             <p>Seat Number: ${guest.seat_number}</p>
                                         </div>
                                         <div class="flex justify-end items-center">
-                                            <button onclick="confirm(${guest.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            <button id="guest-btn-${guest.id}" onclick="confirm(${guest.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                                 Confirm!
                                             </button>
                                         </div>
@@ -61,7 +61,32 @@
                 });
 
                 function confirm(id) {
-                    console.log(id);
+                    $.ajax({
+                        url: `{{ route('confirm-guest') }}?guest=${id}`,
+                        type: 'GET',
+                        success: function(response) {
+                            $('#guest-btn-' + id).html(response.success);
+                            $('#guest-btn-' + id).attr('disabled', true);
+                            $('#guest-btn-' + id).removeClass('bg-blue-500 hover:bg-blue-700');
+                            $('#guest-btn-' + id).addClass('bg-green-500');
+                            setTimeout(() => {
+                                $('#guest-' + id).remove();
+                            }, 1000);
+                        },
+
+                        error: function(response) {
+                            $('#guest-btn-' + id).html(response.error);
+                            $('#guest-btn-' + id).attr('disabled', true);
+                            $('#guest-btn-' + id).removeClass('bg-blue-500 hover:bg-blue-700');
+                            $('#guest-btn-' + id).addClass('bg-red-500');
+                            setTimeout(() => {
+                                $('#guest-btn-' + id).html('Confirm!');
+                                $('#guest-btn-' + id).attr('disabled', false);
+                                $('#guest-btn-' + id).removeClass('bg-red-500');
+                                $('#guest-btn-' + id).addClass('bg-blue-500 hover:bg-blue-700');
+                            }, 1000);
+                        }
+                    });
                 }
         </script>
     @endpush
