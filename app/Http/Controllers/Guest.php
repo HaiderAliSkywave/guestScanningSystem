@@ -60,35 +60,72 @@ class Guest extends Controller
     }
 
     public function search () {
-        return view('search');
-    }
-
-    public function searchGuests (Request $request) {
-        $search = $request->query('name');
-
-        if ($search) {
-            $guests = GuestModel::with('title')
+        $guests = GuestModel::with('title')
             ->where('status', 'yet to arrive')
-            ->where('eng_name', 'like', '%' . $search . '%')
-            ->orWhere('arabic_name', 'like', '%' . $search . '%')
             ->get();
-
-            return response(['guests' => $guests], 200);
-        }
-
-        return response(['guests' => []], 200);
+        
+        return view('search', compact('guests'));
     }
+
+    // public function searchGuests (Request $request) {
+    //     $search = $request->query('name');
+
+    //     if ($search) {
+    //         $guests = GuestModel::with('title')
+    //         ->where('status', 'yet to arrive')
+    //         ->where('eng_name', 'like', '%' . $search . '%')
+    //         ->orWhere('arabic_name', 'like', '%' . $search . '%')
+    //         ->get();
+
+    //         return response(['guests' => $guests], 200);
+    //     }
+
+    //     return response(['guests' => []], 200);
+    // }
 
     public function confirmGuest () {
         try {
-            throw new \Exception('Error: Could not confirm the guest. Please try again.');
-            $guest = GuestModel::find(request('guest'));
-            $guest->status = 'incoming';
-            $guest->save();
+                $guest = GuestModel::find(request('guest'));
+                $guest->status = 'incoming';
+                $guest->save();
 
-            return response(['success' => 'Confirmed!'], 200);
+                return response(['success' => 'Confirmed!'], 200);
         } catch (\Exception $e) {
             return response(['error' => 'Try again!']);
+        }
+    }
+
+    public function editGuest (GuestModel $guest) {
+        $titles = Title::all();
+
+        return view('edit', compact('guest', 'titles'));
+    }
+
+    public function editGuestDetails (Request $request, GuestModel $guest) {
+        try {
+                $imagePath = null;
+                if ($request->photo) {
+                    Storage::disk('public')->delete($guest->photo);
+                    $imageName = uniqid() . '.' . pathinfo($request->photo->getClientOriginalName(), PATHINFO_EXTENSION);
+                    $imagePath = "uploads/{$imageName}";
+                    Storage::disk('public')->put($imagePath, file_get_contents(request('photo')));
+                } else {
+                    $imagePath = $guest->photo;
+                }
+
+                $title = Title::find(request('title'));
+
+                $guest->update([
+                    'eng_name' => request('eng_name'),
+                    'arabic_name' => request('arabic_name'),
+                    'seat_number' => request('seat_number'),
+                    'photo' => $imagePath,
+                    'title_id' => $title->id,
+                ]);
+
+                return redirect('/search')->with('success', 'Guest details updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: Could not update the guest details. Please try again.');
         }
     }
 
@@ -109,6 +146,27 @@ class Guest extends Controller
         try {
                 $guest = GuestModel::find(request('guest'));
                 $guest->status = 'on seat';
+                $guest->save();
+
+                return response(['success' => 'Confirmed!'], 200);
+        } catch (\Exception $e) {
+            return response(['error' => 'Try again!']);
+        }
+    }
+
+    public function onSeatGuests () {
+        $guests = GuestModel::with('title')
+        ->where('status', 'on seat')
+        ->orderBy('updated_at', 'desc')
+        ->get();
+
+        return view('on-seat', compact('guests'));
+    }
+
+    public function revertGuestStatus () {
+        try {
+                $guest = GuestModel::find(request('guest'));
+                $guest->status = 'incoming';
                 $guest->save();
 
                 return response(['success' => 'Confirmed!'], 200);

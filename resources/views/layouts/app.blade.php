@@ -11,9 +11,22 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
                 integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
                 crossorigin="anonymous"></script>
+
+        <!-- Datatables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+        <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
+        <!-- Sweetalert2 -->
+        <script src="
+            https://cdn.jsdelivr.net/npm/sweetalert2@11.16.0/dist/sweetalert2.all.min.js
+            "></script>
+        <link href="
+            https://cdn.jsdelivr.net/npm/sweetalert2@11.16.0/dist/sweetalert2.min.css
+            " rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

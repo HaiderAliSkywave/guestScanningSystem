@@ -1,25 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Search Guests') }}
+            {{ __('Guests on Seat') }}
         </h2>
     </x-slot>
 
-    
-    <div class="py-6">
+    <div class="py-2" id="div_for_guests">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if (session('success'))
-                        <div class="mt-5 bg-transparent text-green-700 px-4 py-3 border border-gray-500 rounded relative" role="alert">
-                            <span class="block sm:inline"><strong>{{ session('success') }}</strong></span>
-                        </div>                        
-                    @elseif (session('error'))
-                        <div class="mt-5 bg-transparent text-red-700 px-4 py-3 border border-gray-500 rounded relative" role="alert">
-                            <span class="block sm:inline"><strong>{{ session('error') }}</strong></span>
-                        </div>                        
-                    @endif
-                    <table id="guests-table" class="display">
+                <div class="p-6 text-gray-900 dark:text-gray-100" id="incoming_guests">
+                    <table id="guests-on-seat" class="display">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -39,7 +29,7 @@
                                     <td>{{ $guest->seat_number }}</td>
                                     <td><img src="{{ asset('storage/' . $guest->photo) }}" alt="{{ $guest->eng_name }}" class="w-28 h-28"/></td>
                                     <td>
-                                        {{ $guest->id }}|{{ request()->user()->role }}
+                                        {{ $guest->id }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -49,11 +39,10 @@
             </div>
         </div>
     </div>
-
     @push('scripts')
         <script>
             $(document).ready(function() {
-                table = $('#guests-table').DataTable({
+                table = $('#guests-on-seat').DataTable({
                     paging: true,
                     searching: true,
                     ordering: true,
@@ -69,18 +58,8 @@
                     columnDefs: [
                         {
                             targets: -1, // Targets the last column (Edit column)
-                            render: function(data) {
-                                console.log(data);
-                                const [guest, role] = data.split('|');
-                                return role === 'admin'
-                                ? `
-                                    <a href="/edit-guest/${guest}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
-                                    `
-                                    // <a onclick="confirm(${guest})" href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Confirm</a>
-                                : `
-                                    <a onclick="confirm(${guest})" href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Confirm</a>
-                                  `
-                                ;
+                            render: function(guest) {
+                                return `<a onclick="confirm(${guest})" href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Off Seat</a>`;
                             }
                         }
                     ]
@@ -100,7 +79,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `{{ route('confirm-guest') }}?guest=${id}`,
+                            url: `{{ route('revert-guest-status') }}?guest=${id}`,
                             type: 'GET',
                             success: function(response) {
                                 if(response.success) {

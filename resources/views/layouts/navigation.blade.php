@@ -30,6 +30,12 @@
                             {{ __('Incoming guests') }}
                         </x-nav-link>
                     </div>
+
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('on-seat-guests')" :active="request()->routeIs('on-seat-guests')">
+                            {{ __('Guests on Seat') }}
+                        </x-nav-link>
+                    </div>
                 @elseif (request()->user()->role === 'searcher')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('search')" :active="request()->routeIs('search')">
@@ -40,6 +46,12 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('incoming-guests')" :active="request()->routeIs('incoming-guests')">
                             {{ __('Incoming guests') }}
+                        </x-nav-link>
+                    </div>
+
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('on-seat-guests')" :active="request()->routeIs('on-seat-guests')">
+                            {{ __('Guests on Seat') }}
                         </x-nav-link>
                     </div>
                 @endif
@@ -111,6 +123,12 @@
                     {{ __('Incoming Guests') }}
                 </x-responsive-nav-link>
             </div>
+
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('on-seat-guests')" :active="request()->routeIs('on-seat-guests')">
+                    {{ __('Guests on Seat') }}
+                </x-responsive-nav-link>
+            </div>
         @elseif (request()->user()->role === 'searcher')
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('search')" :active="request()->routeIs('search')">
@@ -121,6 +139,12 @@
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('incoming-guests')" :active="request()->routeIs('incoming-guests')">
                     {{ __('Incoming Guests') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('on-seat-guests')" :active="request()->routeIs('on-seat-guests')">
+                    {{ __('Guests on Seat') }}
                 </x-responsive-nav-link>
             </div>
         @endif
