@@ -106,11 +106,13 @@ class Guest extends Controller
     public function editGuestDetails (Request $request, GuestModel $guest) {
         try {
                 $imagePath = null;
+                $imageUrl = null;
                 if ($request->photo) {
                     Storage::delete($guest->photo);
                     $imageName = uniqid() . '.' . pathinfo($request->photo->getClientOriginalName(), PATHINFO_EXTENSION);
                     $imagePath = "uploads/{$imageName}";
                     Storage::put($imagePath, file_get_contents(request('photo')));
+                    $imageUrl = Storage::disk('s3')->url($imagePath);
                 } else {
                     $imagePath = $guest->photo;
                 }
@@ -121,7 +123,7 @@ class Guest extends Controller
                     'eng_name' => request('eng_name'),
                     'arabic_name' => request('arabic_name'),
                     'seat_number' => request('seat_number'),
-                    'photo' => $imagePath,
+                    'photo' => $imageUrl,
                     'title_id' => $title->id,
                 ]);
 
