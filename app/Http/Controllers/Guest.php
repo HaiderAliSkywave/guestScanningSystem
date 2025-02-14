@@ -37,6 +37,8 @@ class Guest extends Controller
 
                         // Store the image in the public directory
                         Storage::put($imagePath, file_get_contents($drawing->getPath()));
+
+                        $imageUrl = Storage::disk('s3')->url($imagePath);
                     }
                 }
 
@@ -46,7 +48,7 @@ class Guest extends Controller
                 GuestModel::create([
                     'eng_name' => $data[0],
                     'arabic_name' => $data[1],
-                    'photo' => $imagePath,
+                    'photo' => $imageUrl,
                     'seat_number' => $data[3],
                     'title_id' => $title->id,
                     'status' => $data[5],
