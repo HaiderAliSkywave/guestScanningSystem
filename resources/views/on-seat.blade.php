@@ -27,7 +27,7 @@
                                     <td>{{ $guest->arabic_name }}</td>
                                     <td>{{ $guest->title->name }}</td>
                                     <td>{{ $guest->seat_number }}</td>
-                                    <td><img src="{{ asset('storage/' . $guest->photo) }}" alt="{{ $guest->eng_name }}" class="w-28 h-28"/></td>
+                                    <td><img src="{{ $guest->photo }}" alt="{{ $guest->eng_name }}" class="w-28 h-28"/></td>
                                     <td>
                                         {{ $guest->id }}
                                     </td>
