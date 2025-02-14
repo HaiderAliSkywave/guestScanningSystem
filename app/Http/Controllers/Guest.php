@@ -36,7 +36,7 @@ class Guest extends Controller
                         $imagePath = "uploads/{$imageName}";
 
                         // Store the image in the public directory
-                        Storage::disk('public')->put($imagePath, file_get_contents($drawing->getPath()));
+                        Storage::put($imagePath, file_get_contents($drawing->getPath()));
                     }
                 }
 
@@ -105,10 +105,10 @@ class Guest extends Controller
         try {
                 $imagePath = null;
                 if ($request->photo) {
-                    Storage::disk('public')->delete($guest->photo);
+                    Storage::delete($guest->photo);
                     $imageName = uniqid() . '.' . pathinfo($request->photo->getClientOriginalName(), PATHINFO_EXTENSION);
                     $imagePath = "uploads/{$imageName}";
-                    Storage::disk('public')->put($imagePath, file_get_contents(request('photo')));
+                    Storage::put($imagePath, file_get_contents(request('photo')));
                 } else {
                     $imagePath = $guest->photo;
                 }
