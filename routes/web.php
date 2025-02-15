@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/search', [Guest::class, 'search'])->name('search');
     Route::get('/search-guests', [Guest::class, 'searchGuests'])->name('search-guests');
     Route::get('/confirm-guest', [Guest::class, 'confirmGuest'])->name('confirm-guest');
+    Route::get('/de-confirm-guest', [Guest::class, 'deConfirmGuest'])->name('de-confirm-guest');
     Route::get('/edit-guest/{guest}', [Guest::class, 'editGuest'])->name('edit-guest');
     Route::put('/edit-guest-details/{guest}', [Guest::class, 'editGuestDetails'])->name('edit-guest-details');
     Route::get('/incoming-guests/{view?}', [Guest::class, 'incomingGuests'])->name('incoming-guests');

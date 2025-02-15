@@ -36,13 +36,13 @@
                             {{ __('Guests on Seat') }}
                         </x-nav-link>
                     </div>
-                @elseif (request()->user()->role === 'searcher')
+                @else
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('search')" :active="request()->routeIs('search')">
                             {{ __('Search') }}
                         </x-nav-link>
                     </div>
-                @else
+                
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('incoming-guests')" :active="request()->routeIs('incoming-guests')">
                             {{ __('Incoming guests') }}
@@ -129,13 +129,13 @@
                     {{ __('Guests on Seat') }}
                 </x-responsive-nav-link>
             </div>
-        @elseif (request()->user()->role === 'searcher')
+        @else
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('search')" :active="request()->routeIs('search')">
                     {{ __('Search') }}
                 </x-responsive-nav-link>
             </div>
-        @else
+        
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('incoming-guests')" :active="request()->routeIs('incoming-guests')">
                     {{ __('Incoming Guests') }}

@@ -35,8 +35,12 @@
                                         <p>Seat Number: ${guest.seat_number}</p>
                                     </div>
                                     <div class="flex justify-end items-center">
-                                        <button id="guest-button-${guest.id}" onclick="onSeat(${guest.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        <button id="guest-button-${guest.id}" onclick="onSeat(${guest.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2 py-2 px-4 rounded">
                                             On seat!
+                                        </button>
+
+                                        <button id="de-confirm-button-${guest.id}" onclick="deConfirm(${guest.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2 py-2 px-4 rounded">
+                                            De-Confirm!
                                         </button>
                                     </div>
                                 </div>`;
@@ -65,6 +69,26 @@
                                 $('#guest-button-' + id).html(response.error);
                                 $('#guest-button-' + id).removeClass('bg-blue-500 hover:bg-blue-700');
                                 $('#guest-button-' + id).addClass('bg-red-500');
+                            }
+                        }
+                    });
+            }
+
+            function deConfirm(id) {
+                $('#de-confirm-button-' + id).attr('disabled', true);
+                $('#de-confirm-button-' + id).html('Processing...');
+                $.ajax({
+                        url: `{{ route('de-confirm-guest') }}?guest=${id}`,
+                        type: 'GET',
+                        success: function(response) {
+                            if(response.success) {
+                                $('#de-confirm-button-' + id).html(response.success);
+                                $('#de-confirm-button-' + id).removeClass('bg-blue-500 hover:bg-blue-700');
+                                $('#de-confirm-button-' + id).addClass('bg-green-500');
+                            } else {
+                                $('#de-confirm-button-' + id).html(response.error);
+                                $('#de-confirm-button-' + id).removeClass('bg-blue-500 hover:bg-blue-700');
+                                $('#de-confirm-button-' + id).addClass('bg-red-500');
                             }
                         }
                     });

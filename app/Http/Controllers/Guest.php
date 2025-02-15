@@ -97,6 +97,18 @@ class Guest extends Controller
         }
     }
 
+    public function deConfirmGuest () {
+        try {
+                $guest = GuestModel::find(request('guest'));
+                $guest->status = 'yet to arrive';
+                $guest->save();
+
+                return response(['success' => 'De-Confirmed!'], 200);
+        } catch (\Exception $e) {
+            return response(['error' => 'Try again!']);
+        }
+    }
+
     public function editGuest (GuestModel $guest) {
         $titles = Title::all();
 
