@@ -54,6 +54,8 @@
         <script>
             $(document).ready(function() {
                 table = $('#guests-table').DataTable({
+                    order: [[3, 'asc']],
+                    pageLength: 100,
                     paging: true,
                     searching: true,
                     ordering: true,
@@ -70,13 +72,12 @@
                         {
                             targets: -1, // Targets the last column (Edit column)
                             render: function(data) {
-                                console.log(data);
                                 const [guest, role] = data.split('|');
                                 return role === 'admin'
                                 ? `
                                     <a href="/edit-guest/${guest}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                    <a onclick="confirm(${guest})" href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Confirm</a>
                                     `
-                                    // <a onclick="confirm(${guest})" href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Confirm</a>
                                 : `
                                     <a onclick="confirm(${guest})" href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Confirm</a>
                                   `

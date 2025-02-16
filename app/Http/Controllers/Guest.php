@@ -69,22 +69,6 @@ class Guest extends Controller
         return view('search', compact('guests'));
     }
 
-    // public function searchGuests (Request $request) {
-    //     $search = $request->query('name');
-
-    //     if ($search) {
-    //         $guests = GuestModel::with('title')
-    //         ->where('status', 'yet to arrive')
-    //         ->where('eng_name', 'like', '%' . $search . '%')
-    //         ->orWhere('arabic_name', 'like', '%' . $search . '%')
-    //         ->get();
-
-    //         return response(['guests' => $guests], 200);
-    //     }
-
-    //     return response(['guests' => []], 200);
-    // }
-
     public function confirmGuest () {
         try {
                 $guest = GuestModel::find(request('guest'));

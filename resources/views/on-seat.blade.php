@@ -43,6 +43,8 @@
         <script>
             $(document).ready(function() {
                 table = $('#guests-on-seat').DataTable({
+                    order: [[3, 'asc']],
+                    pageLength: 100,
                     paging: true,
                     searching: true,
                     ordering: true,
