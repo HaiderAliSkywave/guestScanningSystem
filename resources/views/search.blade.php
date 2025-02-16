@@ -37,7 +37,7 @@
                                     <td>{{ $guest->arabic_name }}</td>
                                     <td>{{ $guest->title->name }}</td>
                                     <td>{{ $guest->seat_number }}</td>
-                                    <td><img src="{{ $guest->photo }}" alt="{{ $guest->eng_name }}" class="w-28 h-28"/></td>
+                                    <td><img onclick="openImage(`{{$guest->photo}}`)" src="{{ $guest->photo }}" alt="{{ $guest->eng_name }}" class="w-28 h-28"/></td>
                                     <td>
                                         {{ $guest->id }}|{{ request()->user()->role }}
                                     </td>
@@ -124,6 +124,19 @@
                             }
                         });
                     }
+                });
+            }
+
+            // open image
+            function openImage(src) {
+                Swal.fire({
+                    imageUrl: src,
+                    imageWidth: 400,
+                    imageHeight: 400,
+                    imageAlt: 'Guest Image',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Close',
+                    confirmButtonColor: '#2196F3',
                 });
             }
         </script>
