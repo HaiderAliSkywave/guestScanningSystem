@@ -26,21 +26,21 @@ class Guest extends Controller
                 }
 
                 // Process Image from Cell
-                $drawingCollection = $sheet->getDrawingCollection();
-                $imagePath = null;
+                // $drawingCollection = $sheet->getDrawingCollection();
+                // $imagePath = null;
 
-                foreach ($drawingCollection as $drawing) {
-                    if ($drawing->getCoordinates() == "C{$rowIndex}") { // Image in column 'C'
-                        $imageExtension = pathinfo($drawing->getPath(), PATHINFO_EXTENSION);
-                        $imageName = uniqid() . '.' . $imageExtension;
-                        $imagePath = "uploads/{$imageName}";
+                // foreach ($drawingCollection as $drawing) {
+                //     if ($drawing->getCoordinates() == "C{$rowIndex}") { // Image in column 'C'
+                //         $imageExtension = pathinfo($drawing->getPath(), PATHINFO_EXTENSION);
+                //         $imageName = uniqid() . '.' . $imageExtension;
+                //         $imagePath = "uploads/{$imageName}";
 
-                        // Store the image in the public directory
-                        Storage::put($imagePath, file_get_contents($drawing->getPath()));
+                //         // Store the image in the public directory
+                //         Storage::put($imagePath, file_get_contents($drawing->getPath()));
 
-                        $imageUrl = Storage::disk('s3')->url($imagePath);
-                    }
-                }
+                //         $imageUrl = Storage::disk('s3')->url($imagePath);
+                //     }
+                // }
 
                 $title = Title::firstOrCreate(['name' => $data[4]]);
 
@@ -48,7 +48,7 @@ class Guest extends Controller
                 GuestModel::create([
                     'eng_name' => $data[0],
                     'arabic_name' => $data[1],
-                    'photo' => $imageUrl,
+                    'photo' => 'unknown',
                     'seat_number' => $data[3],
                     'title_id' => $title->id,
                     'status' => $data[5],
@@ -101,17 +101,17 @@ class Guest extends Controller
 
     public function editGuestDetails (Request $request, GuestModel $guest) {
         try {
-                $imagePath = null;
-                $imageUrl = null;
-                if ($request->photo) {
-                    Storage::delete($guest->photo);
-                    $imageName = uniqid() . '.' . pathinfo($request->photo->getClientOriginalName(), PATHINFO_EXTENSION);
-                    $imagePath = "uploads/{$imageName}";
-                    Storage::put($imagePath, file_get_contents(request('photo')));
-                    $imageUrl = Storage::disk('s3')->url($imagePath);
-                } else {
-                    $imagePath = $guest->photo;
-                }
+                // $imagePath = null;
+                // $imageUrl = null;
+                // if ($request->photo) {
+                //     Storage::delete($guest->photo);
+                //     $imageName = uniqid() . '.' . pathinfo($request->photo->getClientOriginalName(), PATHINFO_EXTENSION);
+                //     $imagePath = "uploads/{$imageName}";
+                //     Storage::put($imagePath, file_get_contents(request('photo')));
+                //     $imageUrl = Storage::disk('s3')->url($imagePath);
+                // } else {
+                //     $imagePath = $guest->photo;
+                // }
 
                 $title = Title::find(request('title'));
 
@@ -119,7 +119,7 @@ class Guest extends Controller
                     'eng_name' => request('eng_name'),
                     'arabic_name' => request('arabic_name'),
                     'seat_number' => request('seat_number'),
-                    'photo' => $imageUrl,
+                    'photo' => 'unknown',
                     'title_id' => $title->id,
                 ]);
 
